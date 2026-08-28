@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ui-architect",
+  "version": "1.0.0",
+  "description": "Design and review UI screens one at a time. Detects the project's stack and design substrate, grounds in the screen's functionality and flow, proposes three principle-backed design directions as text sketches, then implements the chosen one using the project's own components and theme. Use when creating a new screen, reviewing or redesigning an existing screen, or aligning a screen to the design system.",
+  "author": {
+    "name": "Dean Clegg"
+  },
+  "keywords": [
+    "ui-design",
+    "ux",
+    "screen-design",
+    "design-review",
+    "wireframe",
+    "design-system",
+    "microcopy"
+  ],
+  "license": "MIT"
+}
