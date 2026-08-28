@@ -1,7 +1,7 @@
 ---
 name: "ui-architect"
 displayName: "UI Architect"
-description: "UI/UX architect that designs and reviews UI one screen at a time. Activate by saying \"use ui-architect\". Detects your design system, then does a touch-up, a polish with suggestions, or a full redesign — always building from your own components and theme. (v1.2.0)"
+description: "UI/UX architect that designs and reviews UI one screen at a time. Activate by saying \"use ui-architect\". Detects your design system, then does a touch-up, a polish with suggestions, or a full redesign — always building from your own components and theme."
 keywords: ["ui-design", "ux", "screen-design", "design-review", "redesign-screen", "design-system", "microcopy"]
 author: "Dean Clegg"
 ---
