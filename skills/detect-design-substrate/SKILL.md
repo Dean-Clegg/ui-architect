@@ -1,91 +1,77 @@
 ---
 name: "detect-design-substrate"
-description: "Detect a project's UI stack and design substrate (Storybook, component library plus tokens, raw CSS, or nothing) and report it before any design work. Use at the start of every ui-architect task, or when the user asks what design system a project uses or wants a minimal design foundation created."
+description: "Detect a project's UI stack and design substrate (Storybook, component library plus tokens, raw CSS, or nothing) and report it in one line before any design work. Runs first on every ui-architect task, gated behind a quick confirmation so it never scans unprompted. Use at the start of any design or review task, or when the user asks what design system a project uses or wants a minimal design foundation created."
 license: "MIT"
 metadata:
   author: "Dean Clegg"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Detect Design Substrate
 
 ## Overview
-Every design or review task starts here. This skill inspects the project to answer two questions — what technology stack is this, and what design substrate is already in place — then reports both back to the user before any design happens. It never guesses silently and never hardcodes component or token names; it discovers them per project. When no design system exists, it offers to create a minimal one matched to the stack rather than over-scaffolding.
+The entry point for every task. It gates behind a quick confirmation, then inspects the project to answer two questions — what stack is this, and what design substrate exists — and reports both in one line before anything else happens. It never guesses silently and never hardcodes component or token names; it discovers them per project. When no design system exists, it offers a minimal one matched to the stack rather than over-scaffolding.
+
+Follow the shared [working-agreement.md](../design-new-screen/references/working-agreement.md) for the activation gate, conversation flow, and scope rules. Keep spoken output terse.
 
 ## Prerequisites Checklist
-- [ ] Read access to the project's source tree and config files
-- [ ] The user has asked to design, review, or set up a screen (this skill runs first regardless)
+- [ ] Read access to the project's source and config files
+- [ ] The user has agreed to begin (activation gate passed)
 
 ## Step-by-Step Guide
 
-### 1. Detect the stack
-Identify the framework and styling technology from config and source files. Look for:
+### 1. Activation gate
+On activation, announce and wait — do not scan yet:
+> "ui-architect activated. Want me to start by gathering the project's theme/styling context?"
+Proceed only on yes.
 
-| Signal | Likely stack |
-|--------|-------------|
-| `package.json` with `react` + `vite` | React + Vite |
-| `package.json` with `next` | Next.js |
-| `package.json` with `vue` / `nuxt` | Vue / Nuxt |
+### 2. Detect the stack
+From config/source, identify framework, language, and styling approach:
+
+| Signal | Stack |
+|--------|-------|
+| `package.json` + `react` + `vite` | React + Vite |
+| `package.json` + `next` | Next.js |
+| `package.json` + `vue` / `nuxt` | Vue / Nuxt |
 | `pubspec.yaml` | Flutter |
 | `angular.json` | Angular |
 | `*.html` + `*.css`, no framework | Plain HTML/CSS |
-| `tailwind.config.*` or `@import "tailwindcss"` | Tailwind (note alongside framework) |
+| `tailwind.config.*` / `@import "tailwindcss"` | Tailwind (note alongside framework) |
+| Kendo / MUI / Chakra / etc. in deps | Note the component library |
 
-Record the framework, the language (TS/JS/Dart/etc.), and the styling approach.
+### 3. Detect the substrate (priority order)
+1. **Storybook** — `.storybook/` or `*.stories.*`.
+2. **Component library + tokens** — a components dir and/or a theme/token file (CSS vars, `theme.dart`, Tailwind theme, tokens JSON).
+3. **Raw CSS / ad-hoc styles** — stylesheets with hardcoded values, no shared tokens.
+4. **Nothing.**
 
-### 2. Detect the design substrate
-Classify what design system is present, in this priority order:
+Discover the real names in use (components, tokens, theme classes). Never assume `Button` or `--primary` exists.
 
-1. **Storybook** — a `.storybook/` directory or `*.stories.*` files. Strongest substrate.
-2. **Component library + tokens** — a components directory (e.g. `components/ui/`, shadcn, a Flutter widgets folder) and/or a theme/token file (CSS custom properties, a `theme.dart`, a Tailwind theme, design tokens JSON).
-3. **Raw CSS / ad-hoc styles** — stylesheets with hardcoded values, no shared token layer.
-4. **Nothing** — no discernible shared design layer.
+### 4. Report in one line
+State it simply, then move on:
+> "Found: Storybook + a `cs2-strat-book` CSS-variable theme and a `components/ui/` library. I'll build from those."
 
-Discover the actual names in use (component export names, token/variable names, theme class names). Do not assume `Button` or `--primary` exist.
+If a component library or raw CSS, name the key building blocks so the user can confirm.
 
-### 3. Report to the user (always)
-State the findings explicitly and concisely before doing anything else. Example:
+### 5. If nothing found
+Offer, don't scaffold silently:
+- **(a) Minimal foundation matched to the stack** — proportional, reversible. Flutter → `theme.dart`; CSS site → `theme.css` + small components file; React without a lib → tokens + a couple of primitives. Never add Storybook or a big catalog unless one exists.
+- **(b) Design ad-hoc for now.**
+Confirm file structure before creating anything.
 
-> Stack: React + Vite + Tailwind. Substrate: Storybook plus a `cs2-strat-book` CSS-variable theme and a `components/ui/` library. I'll design from those.
-
-If the substrate is a component library or raw CSS, name the key building blocks found so the user can confirm.
-
-### 4. Handle the "nothing found" case
-If no design system is found, do not silently scaffold one. Offer a choice:
-
-- **(a) Create a minimal design foundation matched to the stack** — proportional and reversible. Examples:
-  - Flutter → a `theme.dart` (or `ThemeData` extension) with color/spacing/text tokens.
-  - Plain CSS site → a `theme.css` (custom properties) plus a small `components.css` or components file.
-  - React without a library → a tokens file plus a couple of primitive components.
-  - **Never** introduce Storybook, a build pipeline, or a large component catalog unless one already exists.
-- **(b) Design ad-hoc for now** — proceed without a shared system, keeping the screen self-consistent.
-
-Confirm the file structure with the user before building the minimal foundation.
-
-### 5. Hand off
-Once the substrate is known and reported (or created), hand control to `design-new-screen` or `review-screen` with the discovered vocabulary (component names, token names, theme classes) so those skills compose from real building blocks.
-
-## Common Workflows
-
-### Workflow: Existing design system
-**Goal:** Lock onto the right substrate.
-Detect → report ("found Storybook + tokens, using those") → hand off. No creation step.
-
-### Workflow: Greenfield project
-**Goal:** Establish just enough foundation without over-building.
-Detect → report ("no design system found") → offer minimal-vs-ad-hoc → confirm structure → create minimal foundation matched to stack (or proceed ad-hoc) → hand off.
+### 6. Ask scope, then hand off
+Ask what to work on (whole project / screen / section / component / something new), steering away from whole-project work per the working agreement. Then hand off to `design-new-screen` or `review-screen` with the discovered vocabulary.
 
 ## Troubleshooting
 
-### Issue: Multiple substrates present (e.g. Storybook AND raw CSS)
-**Solution:** Prefer the strongest (Storybook > component library > raw CSS). Report the choice and note the drift so `review-screen` can flag the raw CSS later.
+### Issue: Multiple substrates (e.g. Storybook AND raw CSS)
+**Solution:** Prefer the strongest (Storybook > component library > raw CSS). Report the choice; note the drift for `review-screen` to flag later.
 
-### Issue: Detection is ambiguous
-**Solution:** Report what was found and ask the user to confirm the substrate rather than guessing.
+### Issue: Detection ambiguous
+**Solution:** Report what was found and ask the user to confirm rather than guessing.
 
 ## Best Practices
-- Always report detection results before designing — never guess silently.
-- Never hardcode component or token names; discover them per project.
-- Keep any created design foundation minimal and proportional to the stack.
-- Match created file types to the stack (`.dart` for Flutter, `.css` for CSS sites).
-- Treat "build a design system" as a conscious, confirmed decision, not a side effect.
+- Gate before scanning; report before designing. Never guess silently.
+- One-line reports. Depth stays in the reference files, not the chat.
+- Never hardcode component or token names.
+- Any created foundation is minimal and matched to the stack.
