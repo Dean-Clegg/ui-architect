@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ui-architect",
   "version": "1.2.0",
-  "description": "UI/UX architect that designs and reviews UI one screen or section at a time. Activate by saying \"use ui-architect\". It detects the project's stack and design substrate, gathers context, then works one of three user-chosen tracks: A) a correctness touch-up (tokens, clashes, wording), B) a polish with improvement suggestions, or C) a full redesign proposing three principle-backed design directions as text sketches and building the chosen one with the project's own components and theme. Changes look and layout freely; changes to behavior, data, or content are always proposed and confirmed first, never silent. Use when creating a new screen or component, reviewing, polishing, or redesigning an existing screen or section, or aligning UI to the design system.",
+  "description": "UI/UX architect that designs and reviews UI one screen at a time. Activate by saying \"use ui-architect\". Detects your design system, then does a touch-up, a polish with suggestions, or a full redesign — always building from your own components and theme.",
   "author": {
     "name": "Dean Clegg"
   },
