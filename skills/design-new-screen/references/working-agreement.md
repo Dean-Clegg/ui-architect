@@ -20,16 +20,25 @@ Speak in short, plain steps. One idea per turn. The sequence:
    > "What do you want to work on? The whole project / a screen / a section of a screen / a single component / something new?"
    Steer away from whole-project work (see below).
 4. **Gather context** — for an existing target, read the current screen/component and its setup. **Skip this step entirely for a brand-new screen** — there is nothing to gather.
-5. **Ask track** — offer Track A or Track B with one-line explanations (below). A new screen/section auto-routes to Track B; don't ask.
+5. **Ask track** — offer Track A, B, or C with one-line explanations (below). A new screen/section auto-routes to Track C; don't ask.
 6. **Proceed** with the chosen track.
 
 Keep each step to a sentence or two. The reference files are your private knowledge; do not narrate them at the user.
 
-## The two tracks (one line each when offered)
-- **Track A — styling pass:** "Keep the layout and behavior; fix hardcoded colors/spacing, swap in your components, fix accessibility. No redesign."
-- **Track B — redesign:** "Rethink the layout — I'll propose 3 design directions using your theme, you pick one, I build it."
+## The three tracks (the user picks based on intent)
+The track is the user's declared intent — how much freedom they're giving you. Offer one line each:
 
-New screen or new section always uses Track B (no existing design to conform to).
+- **Track A — Touch-up:** "Correctness only — enforce your tokens/theme, fix clashing colors or text, fix hardcoded values, fix wording accuracy. I don't add, remove, or suggest anything else."
+- **Track B — Polish + suggest:** "Everything in A, plus improvement suggestions — retreat elements (an 'Add' button to a '+', recolor to match), and propose using data that's already there (e.g. an unused avatar field) or trimming redundant bits. No full redesign."
+- **Track C — Redesign:** "Free rein — rethink the layout and flow. I'll propose 3 design directions using your theme, you pick one, I build it."
+
+A new screen or section always uses Track C (there's no existing UI to touch up or polish).
+
+### The tracks are intent, not a rigid taxonomy
+The user's pick sets how much latitude you have; you don't need to perfectly classify every change. Two rules keep it clean:
+
+- **Optional proposals in Track B.** While polishing, if you spot a slightly bigger-but-obvious win — e.g. "the search field and its button would work better in one row than stacked" — surface it as an optional proposal, don't silently do it and don't treat it as out of scope: *"Minor changes: [list]. I also noticed X would work better as Y — want just the minor changes, or that too?"* One obviously-better regroup of an existing cluster is fine to offer in B; you don't need to decide whether it's "really" C.
+- **Switch-track nudge (both directions).** The chosen track is a starting intent, not a cage. If the user (on A or B) keeps asking for things that amount to a redesign — especially many structural changes piling up — say so and offer to switch: *"What you're describing is closer to a redesign than a polish — want to switch to Track C so I can propose full layout directions?"* Never silently exceed the declared track; re-ask instead. Keep Track B's suggestions proportional (a handful of pointed wins, not a stream that quietly becomes a redesign) — a high volume of structural wants is the signal to nudge toward C.
 
 ## The governing boundary: propose, don't surprise
 One principle governs every change:
