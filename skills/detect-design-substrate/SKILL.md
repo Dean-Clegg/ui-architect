@@ -21,8 +21,8 @@ Follow the shared [working-agreement.md](../design-new-screen/references/working
 ## Step-by-Step Guide
 
 ### 1. Activation gate
-On activation, announce and wait — do not scan yet:
-> "ui-architect activated. Want me to start by gathering the project's theme/styling context?"
+On activation, announce (including the power version, currently **v1.2.0**) and wait — do not scan yet:
+> "ui-architect v1.2.0 activated. Want me to start by gathering the project's theme/styling context?"
 Proceed only on yes.
 
 ### 2. Detect the stack
